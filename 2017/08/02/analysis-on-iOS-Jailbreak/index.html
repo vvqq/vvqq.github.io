@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -84,28 +84,30 @@
 
 
 
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
-
+  <link rel="alternate" href="/atom.xml" title="ZYUE" type="application/atom+xml" />
 
 
 
 
+  <link rel="shortcut icon" type="image/x-icon" href="/img/favicons/cherry.png?v=5.1.2" />
 
-<meta name="description" content="作者： Huang Heqing 原文链接：https://papers.put.as/papers/ios/2011/ios_jailbreak_analysis.pdf  写在前面：第一次翻译，错误大概很多_(:」∠)_ 另外，这是一篇2011年的旧文章，文章介绍的重放绕过验证的方法已经失效。我也不懂为什么我翻了一篇6年前的文。。">
+
+
+
+
+
+<meta name="description" content="作者： Huang Heqing 原文链接：https://papers.put.as/papers/ios/2011/ios_jailbreak_analysis.pdf 写在前面：第一次翻译，错误大概很多_(:」∠)_ 另外，这是一篇2011年的旧文章，文章介绍的重放绕过验证的方法已经失效。我也不懂为什么我翻了一篇6年前的文。。  1. 引言• 什么是iOS 越狱&amp;emsp;&amp;emsp;iO">
 <meta name="keywords" content="翻译,iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="An analysis on iOS Jailbreak（译）">
 <meta property="og:url" content="http://yoursite.com/2017/08/02/analysis-on-iOS-Jailbreak/index.html">
-<meta property="og:site_name" content="ZYue">
-<meta property="og:description" content="作者： Huang Heqing 原文链接：https://papers.put.as/papers/ios/2011/ios_jailbreak_analysis.pdf  写在前面：第一次翻译，错误大概很多_(:」∠)_ 另外，这是一篇2011年的旧文章，文章介绍的重放绕过验证的方法已经失效。我也不懂为什么我翻了一篇6年前的文。。">
+<meta property="og:site_name" content="ZYUE">
+<meta property="og:description" content="作者： Huang Heqing 原文链接：https://papers.put.as/papers/ios/2011/ios_jailbreak_analysis.pdf 写在前面：第一次翻译，错误大概很多_(:」∠)_ 另外，这是一篇2011年的旧文章，文章介绍的重放绕过验证的方法已经失效。我也不懂为什么我翻了一篇6年前的文。。  1. 引言• 什么是iOS 越狱&amp;emsp;&amp;emsp;iO">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-02T13:20:04.000Z">
+<meta property="og:updated_time" content="2017-08-08T12:53:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="An analysis on iOS Jailbreak（译）">
-<meta name="twitter:description" content="作者： Huang Heqing 原文链接：https://papers.put.as/papers/ios/2011/ios_jailbreak_analysis.pdf  写在前面：第一次翻译，错误大概很多_(:」∠)_ 另外，这是一篇2011年的旧文章，文章介绍的重放绕过验证的方法已经失效。我也不懂为什么我翻了一篇6年前的文。。">
+<meta name="twitter:description" content="作者： Huang Heqing 原文链接：https://papers.put.as/papers/ios/2011/ios_jailbreak_analysis.pdf 写在前面：第一次翻译，错误大概很多_(:」∠)_ 另外，这是一篇2011年的旧文章，文章介绍的重放绕过验证的方法已经失效。我也不懂为什么我翻了一篇6年前的文。。  1. 引言• 什么是iOS 越狱&amp;emsp;&amp;emsp;iO">
 
 
 
@@ -113,7 +115,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
@@ -140,7 +142,7 @@
 
 
 
-  <title>An analysis on iOS Jailbreak（译） | ZYue</title>
+  <title>An analysis on iOS Jailbreak（译） | ZYUE</title>
   
 
 
@@ -176,7 +178,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">ZYue</span>
+        <span class="site-title">ZYUE</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -320,13 +322,13 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/02/analysis-on-iOS-Jailbreak/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="zyue">
+      <meta itemprop="name" content="ZYUE">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/img/touxiang.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ZYue">
+      <meta itemprop="name" content="ZYUE">
     </span>
 
     
@@ -414,11 +416,9 @@
         <blockquote>
 <p>作者： Huang Heqing</p>
 <p>原文链接：<br><a href="https://papers.put.as/papers/ios/2011/ios_jailbreak_analysis.pdf" target="_blank" rel="external">https://papers.put.as/papers/ios/2011/ios_jailbreak_analysis.pdf</a></p>
-</blockquote>
 <p>写在前面：第一次翻译，错误大概很多_<em>(:</em>」∠)_ 另外，这是一篇2011年的旧文章，文章介绍的重放绕过验证的方法已经失效。我也不懂为什么我翻了一篇6年前的文。。</p>
-<hr>
-<a id="more"></a>
-<h4 id="1-引言"><a href="#1-引言" class="headerlink" title="1. 引言"></a>1. 引言</h4><h5 id="•-什么是iOS-越狱"><a href="#•-什么是iOS-越狱" class="headerlink" title="• 什么是iOS 越狱"></a>• 什么是iOS 越狱</h5><p>&emsp;&emsp;iOS是Apple的移动操作系统，它来源于Mac OS X，也以Darwin为基础，是一个类Unix 的操作系统。iOS最初是专为iPhone开发的，之后也被用在iPod Touch，iPad 和Apple TV上。 在本文中，iOS特指在iDevices即iPhone，iPod，iPad和Apple TV上运行的小型操作系统。这个操作系统大约使用500M的设备存储空间，它有四个抽象层：Core OS（核心操作系统）层，Core Service（核心服务）层，媒体层和Cocoa Touch层。</p>
+</blockquote>
+<h4 id="1-引言"><a href="#1-引言" class="headerlink" title="1. 引言"></a>1. 引言</h4><h5 id="•-什么是iOS-越狱"><a href="#•-什么是iOS-越狱" class="headerlink" title="• 什么是iOS 越狱"></a>• 什么是iOS 越狱</h5><p>&emsp;&emsp;iOS是Apple的移动操作系统，它来源于Mac OS X，也以Darwin为基础，是一个类Unix 的操作系统。iOS最初是专为iPhone开发的，之后也被用在iPod Touch，iPad 和Apple TV上。 在本文中，iOS特指在iDevices即iPhone，iPod，iPad和Apple TV上运行的小型操作系统。<a id="more"></a>这个操作系统大约使用500M的设备存储空间，它有四个抽象层：Core OS（核心操作系统）层，Core Service（核心服务）层，媒体层和Cocoa Touch层。</p>
 <p>&emsp;&emsp;出于安全和商业的原因，Apple不允许其操作系统在第三方硬件上运行，同时对在iDevices上使用iOS也有限制。因此，iOS受到了各种形式的入侵攻击，这些入侵攻击着重于增加Apple不支持的功能。这种入侵就叫iOS越狱。</p>
 <h5 id="•-为什么要越狱"><a href="#•-为什么要越狱" class="headerlink" title="• 为什么要越狱"></a>• 为什么要越狱</h5><p>&emsp;&emsp;越狱是一个让iDevices用户获取对iOS操作系统命令行的root访问权限的过程，目的是去除Apple强加的使用限制和访问限制。一旦越狱，iPhone用户就可以（通过像Cydia 这样的安装器）下载App Store不提供的扩展程序和主题，并执行未越狱设备上不可能执行的任务，包括安装Linux之类的非Apple操作系统，或者在旧版本的iDevices上运行多任务（新一代的非越狱设备已有这个功能）。</p>
 <p>&emsp;&emsp;Aurik（UCSB的博士生）开发了一个认证服务器来对iOS的旧固件签名（将在后文中介绍），Cydia创始人Jay Freeman通过这个服务器估计得到，有超过10％的iPhone都是越狱的。</p>
@@ -576,8 +576,8 @@ Bootrom漏洞利用 → iBoot漏洞利用 → userland漏洞利用
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/img/touxiang.jpeg"
-               alt="zyue" />
-          <p class="site-author-name" itemprop="name">zyue</p>
+               alt="ZYUE" />
+          <p class="site-author-name" itemprop="name">ZYUE</p>
            
               <p class="site-description motion-element" itemprop="description"></p>
           
@@ -617,6 +617,13 @@ Bootrom漏洞利用 → iBoot漏洞利用 → userland漏洞利用
 
         </nav>
 
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
         
 
         <div class="links-of-author motion-element">
@@ -684,7 +691,7 @@ Bootrom漏洞利用 → iBoot漏洞利用 → userland漏洞利用
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">zyue</span>
+  <span class="author" itemprop="copyrightHolder">ZYUE</span>
 </div>
 
 
@@ -695,7 +702,7 @@ Bootrom漏洞利用 → iBoot漏洞利用 → userland漏洞利用
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+    NexT.Mist
   </a>
 </div>
 
@@ -748,8 +755,6 @@ Bootrom漏洞利用 → iBoot漏洞利用 → userland漏洞利用
   
 
 
-  
-
 
 
 
@@ -777,9 +782,6 @@ Bootrom漏洞利用 → iBoot漏洞利用 → userland漏洞利用
 
   
   <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
 
 
   
