@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-08-08T12:53:45.000Z</updated>
+  <updated>2017-10-09T13:26:43.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,112 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Machine Learning meets iOS Malware -- Identifying Malicious Applications on Apple Environment （译）</title>
+    <link href="http://yoursite.com/2017/10/09/Machine-Learning-meets-iOS-Malware/"/>
+    <id>http://yoursite.com/2017/10/09/Machine-Learning-meets-iOS-Malware/</id>
+    <published>2017-10-09T12:24:01.000Z</published>
+    <updated>2017-10-09T13:26:43.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>作者：Aniello Cimitile, Fabio Martinelli, Francesco Mercaldo</p>
+<p>原文链接：<br><a href="http://www.iit.cnr.it/sites/default/files/machine-learning-meets.pdf" target="_blank" rel="external">http://www.iit.cnr.it/sites/default/files/machine-learning-meets.pdf</a></p>
+</blockquote>
+<p>摘要：随着智能手机的广泛应用，恶意软件开发团体正在针对移动平台开发越来越具侵略性的软件。虽然科学界已经在Android平台上大量地研究恶意软件，但很少注意到iOS应用程序，可能是因为iOS的闭源性质。在本文中，为弥补这一差距，我们提出了一种在苹果环境下识别恶意应用的方法。我们的方法依赖于一个通过静态分析提取的特征向量。使用20种不同的机器学习算法进行的实验表明，对恶意iOS应用程序和可信应用程序的分类达到了0.971的精确率，1的召回率。<br><a id="more"></a></p>
+<p>关键词：恶意软件，iOS，安全，机器学习，测试，静态分析</p>
+<h4 id="1-引言和背景"><a href="#1-引言和背景" class="headerlink" title="1. 引言和背景"></a>1. 引言和背景</h4><p>&emsp;&emsp;2007年1月，苹果发布了其智能手机的第一个版本：the iPhone。由于引入了触屏界面和虚拟键盘等创新功能，它标志着全球智能手机市场的革命。当时，苹果的iPhone是智能手机市场的主要增长驱动力，推动着竞争对手开发新产品和操作系统以应对新的市场需求。</p>
+<p>&emsp;&emsp;多年来不断增长的现有应用程序数量也证实了iPhone的巨大市场扩张。在2010年3月，App Store中有15万个可供下载的应用程序。 到2015年6月，应用的数量达到150万，是2010年初的10倍。可获取的应用程序数量的增长与新开发应用程序的发布数量直接相关。 2015年5月，提交给App Store申请发布的应用数量首次超过54,000。</p>
+<p>&emsp;&emsp;就现有量来说，最受欢迎的Apple App Store类别是游戏，大约23％的现有应用属于此类别。 其他现有数量领先的类别有商业应用、教育应用、生活应用和娱乐应用。游戏在下载量方面也处于领先地位。</p>
+<p>&emsp;&emsp;在苹果商店下载的应用程序数量在2015年6月份首次达到了1000亿。与前一年750亿的下载量相比，这是一个显着增长。然而，在应用程序短暂的世界里，下载并不等于保留。据估计，全球用户下载的应用程序中，有25%在头六个月内仅被使用一次。</p>
+<p>&emsp;&emsp;由于这些原因，随着越来越多的用户从市场上顺手下载应用程序，移动生态系统对恶意软件开发者来说非常有吸引力。典型攻击者编写的代码越来越具攻击性，能够从受感染的设备收集个人信息并窃取银行帐户。</p>
+<p>&emsp;&emsp;出于安全考虑，Google Play和Apple App Store已有数百个应用程序被下架，这也证实了攻击愈演愈烈的趋势。McAfee安全专家称，2016年iOS的最大威胁是过于激进和侵入性的广告应用，而Google Play中有相当数量的被恶意程序感染的应用。Google和Apple都迅速地从相关的应用商店中下架了恶意应用程序，但不可避免的是，一些受感染的应用程序仍然会通过筛选。</p>
+<p>&emsp;&emsp;从防御的角度来看，免费和商业移动反恶意软件最常采用的基于签名的恶意软件检测技术作用非常有限。并且，由于获取和分类恶意软件签名的过程既费力又耗时，这一检测方法开销很大。</p>
+<p>&emsp;&emsp;虽然科学界已经有了很多方法来检测Android环境中的恶意软件（Battista等，2016; Mercaldo等，2016a; Mercaldo等，2016b），但文献中缺少与iOS环境相关的方法。我们认为，在Android环境中，由于其开源性质，研究人员可以轻松检索样本以进行逆向工程分析，而iOS是封源的，源代码提取更加费力，并且需要取得未加密的二进制代码才能分析应用程序，正如我们将在下一节中所解释的那样。</p>
+<p>&emsp;&emsp;为弥补这一差距，我们提出了一种在苹果环境下识别恶意应用的方法。</p>
+<p>&emsp;&emsp;我们提出了一种使用特征向量代替代码签名的恶意软件检测技术。这个技术（将通过评估来证明）的前提假设是，恶意应用程序和可信应用程序的特征向量的值不同。</p>
+<p>&emsp;&emsp;我们将一些操作码在应用程序反汇编代码中的出现视为特征向量。我们的假设是，为了执行其有害行为，恶意应用程序往往会采用与合法应用程序不同的操作码。</p>
+<p>&emsp;&emsp;在现有文献中，提出了几种使用特征提取来解决恶意软件检测问题的方法。</p>
+<p>&emsp;&emsp;在以往的病毒检测研究中，使用过计数操作码的技术：它成功识别了W32.Evol变质病毒的几种变种（Choucane，Lakhotia，2006）。</p>
+<p>&emsp;&emsp;Bilar（Bilar，2007）提出了一种通过对操作码分布进行统计分析来检测恶意代码的机制。这项工作比较了恶意应用程序和可信样本的统计操作码频率，得出结论：恶意应用程序与可信应用程序的操作码频率分布之间有显着的差别。我们对iOS恶意软件完成了类似分析。在参考文献（Rad ， Masrom，2010; Rad等，2012）中，使用了操作码的直方图作为特征，来分辨一个文件是否是另一个文件的变体版本。在参考文献（Rad，Masrom，2010）中，作者采用0.067的阈值，正确地分类了不同混淆版本的变种病毒; 在参考文献（Rad 等，2012）中，作者使用了一个由40个NGCVK家族恶意软件实例、40个良性文件和20个被作者分类为其它病毒文件的样本组成的数据集，得到了100％的检测率。</p>
+<p>&emsp;&emsp;（Mercaldo et al., 2016c; Canfora et al., 2015c; Canfora et al., 2015b; Canfora et al., 2015a）的研究人员证实，Android恶意应用程序与可信应用程序的操作码频率分布不同，精确度从0.94到0.97，另外，（Bernardeschi等，2004）的作者研究了Java字节码中的非法信息流。</p>
+<p>&emsp;&emsp;关于苹果环境，iSAM（Damopou等人，2011年）是以研究为目的开发的恶意软件原型，它可以无线感染和自我传播到iPhone设备。 这个恶意软件包含六种恶意软件机制，并能够回连到僵尸主控服务器（？）来更新其编程逻辑。</p>
+<p>&emsp;&emsp;Garcıa，Rodrıguez，2016）的研究人员研究了iOS恶意软件的特征，并对2009年至2015年间发现的36个iOS恶意软件家族的样本进行了分类。他们的研究结果表明，这些恶意软件大部分分布在官方市场外，以越狱iOS设备为目标，很少利用任何漏洞。</p>
+<p>&emsp;&emsp;在作者的认知范围内，本文所述是第一项旨在探索用机器学习技术解决苹果环境中的移动恶意软件问题的工作。</p>
+<p>&emsp;&emsp;本文提出以下研究问题：</p>
+<p>&emsp;&emsp;&emsp;&emsp;RQ：通过提取出来的特征，能否区分iOS平台上的恶意应用和可信应用？</p>
+<p>&emsp;&emsp;本文的其余部分组织如下：下一节说明了提出的特征和检测技术； 第三节讨论评估；第四节描述我们所提出方法的表现；最后一节给出结论和未来工作。</p>
+<h4 id="2-方法"><a href="#2-方法" class="headerlink" title="2. 方法"></a>2. 方法</h4><p>&emsp;&emsp;我们使用一组特征对恶意软件进行分类，这些特征对从被分析的应用程序（下文称AUA）里提取出来的操作码中，特定组的出现次数计数。</p>
+<p>&emsp;&emsp;我们对AUA中出现的一组操作码生成直方图：每个直方图维度表示与该维度对应的操作码在代码中出现的次数。</p>
+<p>&emsp;&emsp;与Android环境不同的是，从iOS样本中获取源码的主要问题在于iOS样本通常是加密的，因此我们需要对其进行解密以获取反汇编的代码。因此，在我们的方法的第一步（即处理）中，我们需要使用未加密的二进制代码来分析恶意的有效载荷。苹果商店中的iOS应用程序可以以IPA文件格式下载，这个文件由Apple加密，因此我们需要对其进行解密。饭制，当恶意示例是dylib，package.deb格式，或是通过Apple Enterprise Provisioning分发的应用程序时，二进制文件不会被加密，我们可以跳这一步。otool工具（带选项-l）可用于验证样本是否被加密，由LC ENCRYPTION INFO命令的cryptid值指示（0表示未加密）（Garcıa，Rodrıguez，2016）。当样本被加密时，用dumpdecrypted来获取未加密的代码。</p>
+<p>&emsp;&emsp;一旦我们获得了反汇编代码，我们就计算每个操作码的出现次数，以便选择出现最多的特征：这就是特征选择步骤。我们使用Lucene库提供的NgramTokenizer类来计算出现次数。 值得注意的是，直方图的差异性已被成功应用于恶意软件检测（Rad，Masrom，2010; Rad等，2012）。</p>
+<p>&emsp;&emsp;表1展示了恶意应用程序中最常出现的操作码。<br><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_1.png" alt="恶意应用程序中最常出现的操作码"></p>
+<p>&emsp;&emsp;特征选择步骤的输出是一系列的直方图，每个AUA有一个直方图；每个直方图有22个维度，其中每个维度对应于模型中包括的22个操作码的一个，除以应用中的操作码总数得到的值。</p>
+<p>&emsp;&emsp;为了清楚起见，我们根据以下公式计算每个直方图：</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_2.png" alt=""></p>
+<p>&emsp;&emsp;其中F是提取的22个特征之一，令X为第i个函数中的22个操作码（即O）之一的出现次数，N则是组成AUA的函数总数。</p>
+<p>&emsp;&emsp;我们对每个应用计算得到20个直方图，也就是说，每个应用的特征向量由直方图的值构成。</p>
+<h4 id="3-评估"><a href="#3-评估" class="headerlink" title="3. 评估"></a>3. 评估</h4><p>&emsp;&emsp;我们设计了一个实验以评估所提出的技术的有效性，通过在引言中提出的研究问题RQ来说明。</p>
+<p>&emsp;&emsp;评估数据集包括50个可信iOS应用程序和50个真实的iOS恶意应用程序：可信的样本是从App Store检索得到的，而恶意样本来自Contagio Mobile。数据集包括的恶意软件可按安装方法、激活机制和携带恶意有效载荷的性质分成不同类别，数据集中的恶意应用程序都出现在2013年7月至2016年2月间，而可信应用程序是2016年9月下载最多的免费应用。</p>
+<p>&emsp;&emsp;表格2显示了我们在这个研究里涉及的恶意软件家族，并附它们在Contagio Mobile网站的上传日期。</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_3.png" alt="table2"></p>
+<p>&emsp;&emsp;我们将恶意和可信的应用提交到由VirusTotal提供的57个反恶意应用软件，以分别测试数据集的恶意性和可信性。</p>
+<p>&emsp;&emsp;分类分析旨在评估特征能否正确分类恶意程序和可信程序：我们将表3所示的分类算法应用于特征向量。</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_4.png" alt="table3">    </p>
+<p>&emsp;&emsp;我们按照以下步骤评估分类方法的有效性：</p>
+<p>&emsp;&emsp;1.建立训练集T⊂D;</p>
+<p>&emsp;&emsp;2.建立测试集T’= D÷T;</p>
+<p>&emsp;&emsp;3.在T上进行训练;</p>
+<p>&emsp;&emsp;4.将学习后的分类器应用于T’的每个元素。</p>
+<p>&emsp;&emsp;我们进行了十折交叉验证（注：就是将数据集分成10份，轮流将其中9份做训练1份做验证）：我们将这四个步骤重复了10次，每次改变T的组成（因此T’也不同）。 该分析采用了Weka tool，这是一个知名的用于数据挖掘任务的机器学习算法集合。</p>
+<p>&emsp;&emsp;我们通过该步骤获得的结果如表4。我们用五个度量来评估分类结果：召回率，精确率，F值，RocArea和MCC（即Matthews相关系数）。</p>
+<p>&emsp;&emsp;精确率表示分成该类的所有样本中，真正属于该X类的样本所占比例。即，检索出的相关记录数与检索到的相关不相关记录总数之比：</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_5.png" alt="">    </p>
+<p>&emsp;&emsp;其中tp表示真阳性的数量，fp表示假阳性的数量。</p>
+<p>&emsp;&emsp;召回率表示所有属于X累的样本中，被分类为该类的样本所占的比例。即，检索出的相关记录与所有相关记录之比。</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_6.png" alt="">    </p>
+<p>&emsp;&emsp;其中fn是假阴性的数量。 精确度和召回率是负相关的。</p>
+<p>&emsp;&emsp;F值是测试精度的度量。 该值可以解释称精确率和召回率的加权平均值：</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_7.png" alt="">    </p>
+<p>&emsp;&emsp;RocArea被定义为正确分类一个随机阳性样本高于一个随机阴性样本的概率。（注：这个RocArea其实就是AUC，即随机选择一个阳性样本po和一个阴性样本ne，设将po分类成阳性的概率为p1，将ne分类成阳性的概率为p2，p1&gt;p2的概率就是AUC）。</p>
+<p>&emsp;&emsp;MCC考虑真假阴阳性，通常被认为是一个即使在类别容量相差较大时，也可以使用的平衡值。</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_8.png" alt="">    </p>
+<p>&emsp;&emsp;其中tn是真阴性的数量。</p>
+<p>&emsp;&emsp;分类结果如表4所示。</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_10.png" alt="table4">    </p>
+<p>&emsp;&emsp;我们对恶意应用和可信应用都计算相关度量的值。就精确率来说，识别iOS恶意软件样本的更准确的算法是OneR算法，其精确率等于0,971，召回率等于1。</p>
+<p>&emsp;&emsp;对研究问题RQ的回答：评估表明，特征能有效地检测iOS移动恶意软件，用OneR算法获得最佳的检测性能。</p>
+<h4 id="4-性能评估"><a href="#4-性能评估" class="headerlink" title="4. 性能评估"></a>4. 性能评估</h4><p>&emsp;&emsp;在本节中，我们将讨论我们方法的性能。 为了评估性能，我们使用System.currentTimeMillis()这个Java方法返回当前时间（以毫秒为单位）。 用于进行实验和进行测量的机器是搭载Linux Mint 15，4 GB RAM，Intel Core i5的台式机。我们考虑将所有时间分析为两个不同贡献的总和： 从iOS应用程序（tfv）中提取特征向量所需的平均时间以及使用OneR算法（tm）学习的模型来测试提取的特征向量所需的时间。我们将分析一个样本的总时间看作两个部分的总和：从iOS应用程序中提取特征向量所需的平均时间（tfv）以及用OneR算法训练的模型来测试所提取特征向量所需的时间（tm）。</p>
+<p>&emsp;&emsp;我们的方法的性能如表5所示。</p>
+<p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_11.png" alt="table5">    </p>
+<p>&emsp;&emsp;从计算的角度来看，最重要的部分是tfv，因为tm只需要0.0289秒来评估特征向量：我们提出的方法需要2,1873秒来测试一个新的样本。</p>
+<h4 id="5-结论和展望"><a href="#5-结论和展望" class="headerlink" title="5. 结论和展望"></a>5. 结论和展望</h4><p>&emsp;&emsp;虽然科学界已大量研究Android恶意软件，但文献中缺少与iOS环境相关的方法。因此在本文中我们提出一种通过静态分析和机器学习来检测iOS恶意软件的方法。通过OneR算法我们获得了最好的结果。在未来的工作中，我们计划用提取代码的n元语法（n-gram链接）替代出现次数，以尝试改进方法的检测效果，并探索动态分析的用法，例如例提取系统调用序列以识别iOS恶意软件家族。</p>
+<p>####6. 致谢 略</p>
+<p>####7. 引用 略</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;作者：Aniello Cimitile, Fabio Martinelli, Francesco Mercaldo&lt;/p&gt;
+&lt;p&gt;原文链接：&lt;br&gt;&lt;a href=&quot;http://www.iit.cnr.it/sites/default/files/machine-learning-meets.pdf&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.iit.cnr.it/sites/default/files/machine-learning-meets.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;摘要：随着智能手机的广泛应用，恶意软件开发团体正在针对移动平台开发越来越具侵略性的软件。虽然科学界已经在Android平台上大量地研究恶意软件，但很少注意到iOS应用程序，可能是因为iOS的闭源性质。在本文中，为弥补这一差距，我们提出了一种在苹果环境下识别恶意应用的方法。我们的方法依赖于一个通过静态分析提取的特征向量。使用20种不同的机器学习算法进行的实验表明，对恶意iOS应用程序和可信应用程序的分类达到了0.971的精确率，1的召回率。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="翻译" scheme="http://yoursite.com/categories/%E7%BF%BB%E8%AF%91/"/>
+    
+    
+      <category term="翻译" scheme="http://yoursite.com/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="恶意程序" scheme="http://yoursite.com/tags/%E6%81%B6%E6%84%8F%E7%A8%8B%E5%BA%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>An analysis on iOS Jailbreak（译）</title>
