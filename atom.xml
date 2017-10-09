@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-10-09T13:26:43.000Z</updated>
+  <updated>2017-10-09T13:36:32.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/10/09/Machine-Learning-meets-iOS-Malware/"/>
     <id>http://yoursite.com/2017/10/09/Machine-Learning-meets-iOS-Malware/</id>
     <published>2017-10-09T12:24:01.000Z</published>
-    <updated>2017-10-09T13:26:43.000Z</updated>
+    <updated>2017-10-09T13:36:32.000Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>作者：Aniello Cimitile, Fabio Martinelli, Francesco Mercaldo</p>
@@ -94,9 +94,7 @@
 <p><img src="http://oxk3uz1jl.bkt.clouddn.com/2017/10-09/171009_11.png" alt="table5">    </p>
 <p>&emsp;&emsp;从计算的角度来看，最重要的部分是tfv，因为tm只需要0.0289秒来评估特征向量：我们提出的方法需要2,1873秒来测试一个新的样本。</p>
 <h4 id="5-结论和展望"><a href="#5-结论和展望" class="headerlink" title="5. 结论和展望"></a>5. 结论和展望</h4><p>&emsp;&emsp;虽然科学界已大量研究Android恶意软件，但文献中缺少与iOS环境相关的方法。因此在本文中我们提出一种通过静态分析和机器学习来检测iOS恶意软件的方法。通过OneR算法我们获得了最好的结果。在未来的工作中，我们计划用提取代码的n元语法（n-gram链接）替代出现次数，以尝试改进方法的检测效果，并探索动态分析的用法，例如例提取系统调用序列以识别iOS恶意软件家族。</p>
-<p>####6. 致谢 略</p>
-<p>####7. 引用 略</p>
-]]></content>
+<h4 id="6-致谢-略"><a href="#6-致谢-略" class="headerlink" title="6. 致谢 略"></a>6. 致谢 略</h4><h4 id="7-引用-略"><a href="#7-引用-略" class="headerlink" title="7. 引用 略"></a>7. 引用 略</h4>]]></content>
     
     <summary type="html">
     
